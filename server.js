@@ -4,6 +4,7 @@ const noteData = require("./db/db.json");
 const PORT = 3001;
 const fs = require("fs");
 const crypto = require("crypto");
+const { response } = require("express");
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -28,7 +29,7 @@ app.post("/api/notes", (req, res) => {
     const newNote = {
       title,
       text,
-      note_id: crypto.randomUUID(),
+      id: crypto.randomUUID(),
     };
 
     noteData.push(newNote);
@@ -39,17 +40,31 @@ app.post("/api/notes", (req, res) => {
       body: newNote,
     };
 
-    console.log(response);
-
     res.status(201).json(response);
   } else {
     res.status(500).json("Error in posting note");
   }
 });
 
+app.delete("/api/notes/:id", (req, res) => {
+  for (let i = 0; i < noteData.length; i++) {
+    if (noteData[i].id === req.params.id) {
+      if (i === 0) noteData.shift();
+      else noteData.splice(i, i);
+      writeToFile("./db/db.json", JSON.stringify(noteData));
+      const response = {
+        status: "success",
+      };
+      res.status(201).json(response);
+    } else {
+      res.status(500).json("Error in deleting note");
+    }
+  }
+});
+
 function writeToFile(filename, data) {
   fs.writeFile(filename, data, (err) =>
-    err ? console.log(err) : console.log("Sucessfully saved note")
+    err ? console.log(err) : console.log("Sucessfully updated notes")
   );
 }
 
