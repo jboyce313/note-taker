@@ -1,7 +1,10 @@
 const express = require("express");
 const path = require("path");
 const noteData = require("./db/db.json");
-const PORT = 3001;
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 8000;
+}
 const fs = require("fs");
 const crypto = require("crypto");
 const { response } = require("express");
@@ -68,6 +71,6 @@ function writeToFile(filename, data) {
   );
 }
 
-app.listen(PORT, () => {
-  console.log(`Note taker app is listening at http://localhost:${PORT}`);
+app.listen(port, () => {
+  console.log(`Note taker app is listening at http://localhost:${port}`);
 });
