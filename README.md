@@ -2,7 +2,7 @@
 
 ## Description
 
-This app allows users to create and store notes using and Express.js server.
+This app allows users to create and store notes using and Express.js server. HTML and CSS for this app were provided by the Full Stack Bootcamp at the University of Kansas.
 
 ## Table of Contents
 
